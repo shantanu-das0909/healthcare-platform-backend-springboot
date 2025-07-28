@@ -43,8 +43,8 @@ public class AdminController {
         return ResponseEntity.ok(adminService.getAllAppointments());
     }
 
-    @GetMapping("/appointments/{patientId}")
-    public ResponseEntity<List<Appointment>> getAppointmentsForAPatient(@PathVariable Long patientId) {
+    @GetMapping("/appointments/patients/{patientId}")
+    public ResponseEntity<List<Appointment>> getAppointmentsByPatient(@PathVariable Long patientId) {
         return ResponseEntity.ok(adminService.getAllAppointmentsForAPatient(patientId));
     }
 
@@ -61,6 +61,11 @@ public class AdminController {
     ) {
         adminService.updateAppointment(updateAppointmentRequest, appointmentId);
         return ResponseEntity.ok("Appointment update successfully");
+    }
+
+    @GetMapping("/appointments/doctors/{doctorId}")
+    public ResponseEntity<List<Appointment>> getAppointmentsByDoctor(@PathVariable Long doctorId) {
+        return ResponseEntity.ok(adminService.getAppointmentsByDoctorId(doctorId));
     }
 
 }

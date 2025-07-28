@@ -14,4 +14,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     @Query(value = "SELECT * FROM appointment WHERE patient_id=:patientId", nativeQuery = true)
     Optional<List<Appointment>> findAppointmentByPatientId(@Param("patientId") long patientId);
+
+    @Query(value = "SELECT * FROM appointment WHERE doctor_id=:doctorId", nativeQuery = true)
+    Optional<List<Appointment>> findAppointmentByDoctorId(@Param("doctorId") long doctorId);
 }

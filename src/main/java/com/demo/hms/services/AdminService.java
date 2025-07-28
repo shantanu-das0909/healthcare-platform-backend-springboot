@@ -82,4 +82,8 @@ public class AdminService {
 
         appointmentRepository.save(appointment);
     }
+
+    public List<Appointment> getAppointmentsByDoctorId(Long doctorId) {
+        return appointmentRepository.findAppointmentByDoctorId(doctorId).get();
+    }
 }
