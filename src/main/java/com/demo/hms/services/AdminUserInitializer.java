@@ -22,6 +22,16 @@ public class AdminUserInitializer {
 
               System.out.println("Default Admin User Created!");
           }
+
+            if(userRepository.findByUsername("user").isEmpty()) {
+                User user1 = new User();
+                user1.setUsername("user1");
+                user1.setPassword(passwordEncoder.encode("user1234"));
+                user1.setRole("ROLE_USER");
+                userRepository.save(user1);
+
+                System.out.println("Default User1 User Created!");
+            }
         };
     }
 }
