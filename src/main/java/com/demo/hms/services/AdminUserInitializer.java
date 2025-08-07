@@ -23,7 +23,7 @@ public class AdminUserInitializer {
               System.out.println("Default Admin User Created!");
           }
 
-            if(userRepository.findByUsername("user").isEmpty()) {
+            if(userRepository.findByUsername("user1").isEmpty()) {
                 User user1 = new User();
                 user1.setUsername("user1");
                 user1.setPassword(passwordEncoder.encode("user1234"));
