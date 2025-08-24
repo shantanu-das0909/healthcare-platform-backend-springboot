@@ -37,12 +37,13 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(httpSecurityCorsConfigurer  -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/authenticate").permitAll()
-                                .requestMatchers(
-                                        "/admin/add-doctor",
-                                        "/admin/delete-doctor"
-                                ).hasRole("ADMIN")
-                                .anyRequest().authenticated()
+                        auth -> auth.requestMatchers("/login").permitAll()
+//                                .requestMatchers(
+//                                        "/admin/add-doctor",
+//                                        "/admin/delete-doctor"
+//                                ).hasRole("ADMIN")
+//                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 );
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

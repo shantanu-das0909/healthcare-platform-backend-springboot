@@ -13,9 +13,9 @@ public class AdminUserInitializer {
     @Bean
     public CommandLineRunner createAdminUser(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-          if(userRepository.findByUsername("admin").isEmpty()) {
+          if(userRepository.findByUsername("admin@gmail.com").isEmpty()) {
               User admin = new User();
-              admin.setUsername("admin");
+              admin.setUsername("admin@gmail.com");
               admin.setPassword(passwordEncoder.encode("admin1234"));
               admin.setRole("ROLE_ADMIN");
               userRepository.save(admin);

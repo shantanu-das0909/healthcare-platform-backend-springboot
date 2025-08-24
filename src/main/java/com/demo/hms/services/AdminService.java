@@ -80,6 +80,9 @@ public class AdminService {
             appointment.setDoctor(optionalDoctor.get());
         }
 
+        if (updateAppointmentRequest.getStatus()!=null && updateAppointmentRequest.getStatus().equals("CONFIRMED")) {
+            appointment.setStatus("CONFIRMED");
+        }
         appointmentRepository.save(appointment);
     }
 
