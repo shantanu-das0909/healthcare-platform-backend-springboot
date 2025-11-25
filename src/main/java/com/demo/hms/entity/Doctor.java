@@ -19,6 +19,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 public class Doctor {
+    
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
