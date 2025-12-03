@@ -27,6 +27,16 @@ public class AdminService {
     @Autowired
     private AppointmentRepository appointmentRepository;
 
+    public Doctor getDoctor(Long doctorId) {
+        Optional<Doctor> optionalDoctor = doctorRepository.findById(doctorId);
+        optionalDoctor.orElseThrow(() -> new ResourceNotFoundException("Doctor not found with id " + doctorId));
+        return optionalDoctor.get();
+    }
+
+    public List<Doctor> getDoctors() {
+        return doctorRepository.findAll();
+    }
+
     public Doctor addDoctor(AddDoctorRequest addDoctorRequest) {
         Doctor newDoctor = Doctor.builder()
                 .name(addDoctorRequest.getName())

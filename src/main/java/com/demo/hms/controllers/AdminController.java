@@ -27,6 +27,16 @@ public class AdminController {
         return ResponseEntity.ok(adminService.addDoctor((addDoctorRequest)));
     }
 
+    @GetMapping("/doctors/{doctorId}")
+    public ResponseEntity<Doctor> getDoctor(@PathVariable Long doctorId) {
+        return ResponseEntity.ok(adminService.getDoctor(doctorId));
+    }
+
+    @GetMapping("/doctors")
+    public ResponseEntity<List<Doctor>> getDoctors() {
+        return ResponseEntity.ok(adminService.getDoctors());
+    }
+
     @DeleteMapping("/delete-doctor/{doctorId}")
     public ResponseEntity<String> deleteDoctor(@PathVariable Long doctorId) {
         adminService.deleteDoctor(doctorId);

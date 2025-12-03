@@ -35,12 +35,10 @@ public class Appointment {
 
     @ManyToOne
     @JoinColumn(name = "doctorId", referencedColumnName = "doctorId")
-//    @JsonIgnore
     private Doctor doctor;
 
     @ManyToOne
     @JoinColumn(name = "patientId", nullable = false)
-//    @JsonIgnore
     private Patient patient;
 
     @CreationTimestamp

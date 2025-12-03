@@ -9,6 +9,7 @@ import com.demo.hms.exceptions.ResourceNotFoundException;
 import com.demo.hms.repository.AppointmentRepository;
 import com.demo.hms.repository.DoctorRepository;
 import com.demo.hms.repository.PatientRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class PatientService {
 
     @Autowired
@@ -47,11 +49,11 @@ public class PatientService {
                 );
                 newAppointment.setDoctor(optionalDoctor.get());
             }
-
-            patient.getAppointments().add(newAppointment);
+            Appointment savedAppointment = appointmentRepository.save(newAppointment);
+            patient.getAppointments().add(savedAppointment);
             patientRepository.save(patient);
 
-            return null;
+            return savedAppointment;
 
         } else {
             throw new ResourceNotFoundException("Patient not found with this id: " + patientId);
