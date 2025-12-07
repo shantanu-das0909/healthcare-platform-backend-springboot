@@ -23,22 +23,23 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long appointmentId;
 
-    private LocalDateTime appointmentDate;
+    private LocalDateTime appointmentTime;
 
-    private String appointmentReason;
+    private String reasonForVisit;
 
     private String comments;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private AppointmentStatus status;
 
     private String cancelReason;
 
     @ManyToOne
-    @JoinColumn(name = "doctorId", referencedColumnName = "doctorId")
+    @JoinColumn(name = "doctor_id", referencedColumnName = "doctorId")
     private Doctor doctor;
 
     @ManyToOne
-    @JoinColumn(name = "patientId", nullable = false)
+    @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
 
     @CreationTimestamp

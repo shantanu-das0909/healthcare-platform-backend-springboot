@@ -14,11 +14,13 @@ import java.util.Optional;
 @AllArgsConstructor
 public class NewAppointmentRequest {
 
-    private LocalDateTime appointmentDate;
+    private LocalDateTime appointmentTime;
 
-    private String appointmentReason;
+    private String reasonForVisit;
 
     private String comments;
 
     private Long doctorId;
+
+    private Long patientId;
 }

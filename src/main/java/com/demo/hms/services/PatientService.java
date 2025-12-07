@@ -3,6 +3,7 @@ package com.demo.hms.services;
 import com.demo.hms.dto.AddPatientRequest;
 import com.demo.hms.dto.NewAppointmentRequest;
 import com.demo.hms.entity.Appointment;
+import com.demo.hms.entity.AppointmentStatus;
 import com.demo.hms.entity.Doctor;
 import com.demo.hms.entity.Patient;
 import com.demo.hms.exceptions.ResourceNotFoundException;
@@ -35,10 +36,10 @@ public class PatientService {
         if (patientOptional.isPresent()) {
             Patient patient = patientOptional.get();
             Appointment newAppointment = Appointment.builder()
-                    .appointmentDate(newAppointmentRequest.getAppointmentDate())
-                    .appointmentReason(newAppointmentRequest.getAppointmentReason())
+                    .appointmentTime(newAppointmentRequest.getAppointmentTime())
+                    .reasonForVisit(newAppointmentRequest.getReasonForVisit())
                     .comments(newAppointmentRequest.getComments())
-                    .status("PENDING")
+                    .status(AppointmentStatus.PENDING)
                     .patient(patient)
                     .build();
 

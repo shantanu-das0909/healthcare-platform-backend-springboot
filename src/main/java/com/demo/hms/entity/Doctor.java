@@ -34,7 +34,7 @@ public class Doctor {
     @Column(nullable = false)
     private String phone;
 
-    private String speciality;
+    private String specialization;
 
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     @JsonIgnore

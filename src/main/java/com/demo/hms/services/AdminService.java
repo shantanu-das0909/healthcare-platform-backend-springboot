@@ -3,6 +3,7 @@ package com.demo.hms.services;
 import com.demo.hms.dto.AddDoctorRequest;
 import com.demo.hms.dto.UpdateAppointmentRequest;
 import com.demo.hms.entity.Appointment;
+import com.demo.hms.entity.AppointmentStatus;
 import com.demo.hms.entity.Doctor;
 import com.demo.hms.entity.Patient;
 import com.demo.hms.exceptions.ResourceNotFoundException;
@@ -42,7 +43,7 @@ public class AdminService {
                 .name(addDoctorRequest.getName())
                 .email(addDoctorRequest.getEmail())
                 .phone(addDoctorRequest.getPhone())
-                .speciality(addDoctorRequest.getSpeciality()).build();
+                .specialization(addDoctorRequest.getSpeciality()).build();
 
         return doctorRepository.save(newDoctor);
     }
@@ -77,7 +78,7 @@ public class AdminService {
 
         Appointment appointment = optionalAppointment.get();
         if(updateAppointmentRequest.getStatus() != null && updateAppointmentRequest.getStatus().equals("CANCEL")) {
-            appointment.setStatus("CANCEL");
+            appointment.setStatus(AppointmentStatus.CANCELED);
             appointment.setCancelReason(updateAppointmentRequest.getCancelReason());
         }
 
@@ -91,7 +92,7 @@ public class AdminService {
         }
 
         if (updateAppointmentRequest.getStatus()!=null && updateAppointmentRequest.getStatus().equals("CONFIRMED")) {
-            appointment.setStatus("CONFIRMED");
+            appointment.setStatus(AppointmentStatus.CONFIRMED);
         }
         appointmentRepository.save(appointment);
     }
