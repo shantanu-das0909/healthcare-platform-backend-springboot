@@ -94,4 +94,16 @@ public class AppointmentService {
 
     }
 
+    public Appointment changeStatus(Long appointmentId, String status) {
+
+        Appointment appointment = appointmentRepository.findById(appointmentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Appointment not found"));
+
+        if(!appointment.getStatus().equals(AppointmentStatus.CONFIRMED)){
+            throw new ResourceNotFoundException("Only confirmed appointments can be canceled.");
+        }
+
+        appointment.setStatus(AppointmentStatus.CANCELED);
+        return appointmentRepository.save(appointment);
+    }
 }
