@@ -11,7 +11,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
@@ -39,6 +38,9 @@ public class Doctor {
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Appointment> appointments;
+
+    @OneToMany(mappedBy = "doctor")
+    private List<MedicalRecord> medicalRecords;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

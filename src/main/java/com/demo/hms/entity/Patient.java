@@ -7,9 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
@@ -26,8 +24,11 @@ public class Patient {
 
     private String email;
 
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "patient")
     @JsonIgnore
     private List<Appointment> appointments;
+
+    @OneToMany(mappedBy = "patient")
+    private List<MedicalRecord> medicalRecords;
 
 }
