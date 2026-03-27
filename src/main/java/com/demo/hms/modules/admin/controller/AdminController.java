@@ -1,0 +1,80 @@
+package com.demo.hms.modules.admin.controller;
+
+import com.demo.hms.modules.doctor.dto.AddDoctorRequest;
+import com.demo.hms.modules.appointment.dto.UpdateAppointmentRequest;
+import com.demo.hms.modules.appointment.entity.Appointment;
+import com.demo.hms.modules.doctor.entity.Doctor;
+import com.demo.hms.modules.patient.entity.Patient;
+import com.demo.hms.modules.admin.service.AdminService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/admin")
+public class AdminController {
+
+    @Autowired
+    private AdminService adminService;
+
+    @PostMapping("/add-doctor")
+    public ResponseEntity<Doctor> addDoctor(@RequestBody AddDoctorRequest addDoctorRequest) {
+
+        return ResponseEntity.ok(adminService.addDoctor((addDoctorRequest)));
+    }
+
+    @GetMapping("/doctors/{doctorId}")
+    public ResponseEntity<Doctor> getDoctor(@PathVariable Long doctorId) {
+        return ResponseEntity.ok(adminService.getDoctor(doctorId));
+    }
+
+    @GetMapping("/doctors")
+    public ResponseEntity<List<Doctor>> getDoctors() {
+        return ResponseEntity.ok(adminService.getDoctors());
+    }
+
+    @DeleteMapping("/delete-doctor/{doctorId}")
+    public ResponseEntity<String> deleteDoctor(@PathVariable Long doctorId) {
+        adminService.deleteDoctor(doctorId);
+        return new ResponseEntity<>("Successfully deleted doctor with id " + doctorId, HttpStatus.OK);
+    }
+
+    @GetMapping("/patients")
+    public ResponseEntity<List<Patient>> getPatients() {
+        return ResponseEntity.ok(adminService.getAllPatients());
+    }
+
+    @GetMapping("/appointments")
+    public ResponseEntity<List<Appointment>> getAppointments() {
+        return ResponseEntity.ok(adminService.getAllAppointments());
+    }
+
+    @GetMapping("/appointments/patients/{patientId}")
+    public ResponseEntity<List<Appointment>> getAppointmentsByPatient(@PathVariable Long patientId) {
+        return ResponseEntity.ok(adminService.getAllAppointmentsForAPatient(patientId));
+    }
+
+    @DeleteMapping("/patients/{patientId}")
+    public ResponseEntity<Boolean> deletePatient(@PathVariable Long patientId) {
+        adminService.deletePatient(patientId);
+        return ResponseEntity.ok(true);
+    }
+
+    @PutMapping("/appointments/{appointmentId}")
+    public ResponseEntity<String> updateAppointment(
+            @RequestBody UpdateAppointmentRequest updateAppointmentRequest,
+            @PathVariable Long appointmentId
+    ) {
+        adminService.updateAppointment(updateAppointmentRequest, appointmentId);
+        return ResponseEntity.ok("Appointment update successfully");
+    }
+
+    @GetMapping("/appointments/doctors/{doctorId}")
+    public ResponseEntity<List<Appointment>> getAppointmentsByDoctor(@PathVariable Long doctorId) {
+        return ResponseEntity.ok(adminService.getAppointmentsByDoctorId(doctorId));
+    }
+
+}
