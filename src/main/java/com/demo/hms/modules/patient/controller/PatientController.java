@@ -18,13 +18,6 @@ public class PatientController {
     @Autowired
     private PatientService patientService;
 
-    @PostMapping("/new-appointment/{patientId}")
-    public ResponseEntity<Appointment> newAppointment(@RequestBody NewAppointmentRequest newAppointmentRequest,
-                                                      @PathVariable Long patientId) {
-
-        return ResponseEntity.ok(patientService.addNewAppointment(newAppointmentRequest, patientId));
-    }
-
     @PostMapping("/add-patient")
     public ResponseEntity<Patient> addPatient(@RequestBody AddPatientRequest addPatientRequest) {
         return ResponseEntity.ok(patientService.addNewPatient(addPatientRequest));
@@ -33,6 +26,14 @@ public class PatientController {
     @GetMapping
     public ResponseEntity<List<Patient>> getAllPatients() {
         return ResponseEntity.ok(patientService.getAllPatients());
+    }
+
+    @GetMapping("/next")
+    public ResponseEntity<List<Patient>> getNextBatchOfPatient(
+            @RequestParam(required = false) Long lastId,
+            @RequestParam(defaultValue = "20") int size) {
+
+        return ResponseEntity.ok(patientService.getNextPageForPatient(lastId, size));
     }
 
 }

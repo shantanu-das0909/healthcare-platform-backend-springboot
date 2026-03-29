@@ -12,8 +12,11 @@ import com.demo.hms.modules.doctor.repo.DoctorRepository;
 import com.demo.hms.modules.patient.repo.PatientRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,38 +34,7 @@ public class PatientService {
     private AppointmentRepository appointmentRepository;
 
     public List<Patient> getAllPatients() {
-        List<Patient> patients = patientRepository.findAll();
-        return patients;
-    }
-    public Appointment addNewAppointment(NewAppointmentRequest newAppointmentRequest, Long patientId) {
-
-        Optional<Patient> patientOptional = patientRepository.findById(patientId);
-        if (patientOptional.isPresent()) {
-            Patient patient = patientOptional.get();
-            Appointment newAppointment = Appointment.builder()
-                    .appointmentTime(newAppointmentRequest.getAppointmentTime())
-                    .reasonForVisit(newAppointmentRequest.getReasonForVisit())
-                    .comments(newAppointmentRequest.getComments())
-                    .status(AppointmentStatus.PENDING)
-                    .patient(patient)
-                    .build();
-
-            if (newAppointmentRequest.getDoctorId() != null) {
-                Optional<Doctor> optionalDoctor = doctorRepository.findById(newAppointmentRequest.getDoctorId());
-                optionalDoctor.orElseThrow(
-                        () -> new ResourceNotFoundException("Doctor not found with this id: " + newAppointmentRequest.getDoctorId())
-                );
-                newAppointment.setDoctor(optionalDoctor.get());
-            }
-            Appointment savedAppointment = appointmentRepository.save(newAppointment);
-            patient.getAppointments().add(savedAppointment);
-            patientRepository.save(patient);
-
-            return savedAppointment;
-
-        } else {
-            throw new ResourceNotFoundException("Patient not found with this id: " + patientId);
-        }
+        return patientRepository.findAll();
     }
 
     public Patient addNewPatient(AddPatientRequest addPatientRequest) {
@@ -73,4 +45,21 @@ public class PatientService {
         return patientRepository.save(patient);
     }
 
+    @Transactional(readOnly = true)
+    public List<Patient> getNextPageForPatient(Long lastSeenId, int pageSize) {
+        // Get next IDs using the cursor (No OFFSET used)
+        List<Long> ids = patientRepository.findNextPatientIds(
+                lastSeenId == null ? 0L : lastSeenId,
+                PageRequest.of(0, pageSize)
+        );
+
+        if (ids.isEmpty()) return List.of();
+
+        // Fetch full data
+        List<Patient> patients = patientRepository.findPatientsWithAppointmentsByIds(ids);
+
+        // Ensure the order matches the IDs
+        patients.sort(Comparator.comparing(Patient::getId));
+        return patients;
+    }
 }

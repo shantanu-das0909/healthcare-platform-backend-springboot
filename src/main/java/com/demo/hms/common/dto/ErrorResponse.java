@@ -1,4 +1,4 @@
-package com.demo.hms.shared.dto;
+package com.demo.hms.common.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
